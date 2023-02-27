@@ -1,0 +1,36 @@
+name: "Django Test Case"
+
+on:
+  push:
+    branches:
+      - '**'
+  
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  'Run Django Test Case'
+  runs-on:  ubuntu-latest
+
+  steps:
+
+    - name: Pulling Code
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    
+    - name: Upgrade Pip
+      run:  |
+        pip install --upgrade pip
+    
+    - name: Install Dependencies
+      run:  |
+        pip install -r requirements.txt
+    
+    - name: Run Test Case
+      run:
+        python manage.py test
