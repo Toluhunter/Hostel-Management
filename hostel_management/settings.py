@@ -14,6 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = (os.getenv('DEBUG') == 'true')
 
 ALLOWED_HOSTS = [
+    "127.0.0.1",
     os.getenv('API_DOMAIN')
 ]
 
