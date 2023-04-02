@@ -40,4 +40,4 @@ class Report(models.Model):
         unique_together = ("issue", "room")
 
     def __str__(self):
-        return f"{self.room} {self.title}"
+        return f"{self.room} {self.issue}"

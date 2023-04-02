@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Report, Room
+from .models import Report, Room, Category
 from . import serializers
 
 
@@ -37,3 +37,15 @@ class FetchRoomsView(generics.ListAPIView):
     serializer_class = serializers.RoomSerializer
     permission_classes = [IsAuthenticated]
     queryset = Room.objects.all()
+
+
+class CreateCategoryView(generics.CreateAPIView):
+
+    serializer_class = serializers.CategorySerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class ListCategoryView(generics.ListAPIView):
+    serializer_class = serializers.CategorySerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Category.objects.all()

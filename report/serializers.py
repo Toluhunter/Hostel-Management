@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Report, Room
+from .models import Report, Room, Category
 
 
 class FetchReportSerialier(serializers.ModelSerializer):
@@ -46,3 +46,11 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+        read_only_fields = ['id']
