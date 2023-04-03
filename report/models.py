@@ -16,7 +16,7 @@ class Category(models.Model):
 
     name = models.CharField(unique=True, null=False, max_length=30)
     start_price = models.IntegerField(validators=[MinValueValidator(
-        500), MaxValueValidator(2000)], null=False, blank=False)
+        500), MaxValueValidator(10_000)], null=False, blank=False)
     last_price = models.IntegerField(
         validators=[MaxValueValidator(40_000)], null=False, blank=False)
 
