@@ -23,6 +23,7 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
+        fileds = '__all__'
         read_only_fields = ["id", "date_added", "resolved"]
 
     def __init__(self, instance=None, **kwargs):
