@@ -63,17 +63,17 @@ class CategorySerializer(serializers.ModelSerializer):
         return attrs
 
 
-class FetchCategoryPricesSerializer(serializers.ModelSerializer):
+class FetchCompileCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["start_price", "last_price"]
+        fields = ["name", "start_price", "last_price"]
 
 
 class FetchCompileSerilizer(serializers.ModelSerializer):
 
     room = serializers.StringRelatedField()
-    category = FetchCategoryPricesSerializer(read_only=True)
+    category = FetchCompileCategorySerializer(read_only=True)
 
     class Meta:
         model = Report
