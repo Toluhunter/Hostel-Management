@@ -15,12 +15,6 @@ class FetchReportSerialier(serializers.ModelSerializer):
 
 class ReportSerializer(serializers.ModelSerializer):
 
-    def get_category(self, obj):
-        for cat_value, cat_name in obj.categories:
-            if cat_value == obj.category:
-                return cat_name
-        return None
-
     class Meta:
         model = Report
         exclude = ['reported']
@@ -29,7 +23,7 @@ class ReportSerializer(serializers.ModelSerializer):
     def __init__(self, instance=None, **kwargs):
         super().__init__(instance, **kwargs)
         if instance and "data" not in kwargs:
-            self.fields["category"] = serializers.SerializerMethodField()
+            self.fields["category"] = serializers.StringRelatedField()
 
     def validate(self, attrs):
         user = self.context["request"].user
