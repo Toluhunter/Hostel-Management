@@ -2,6 +2,10 @@ from uuid import uuid4
 
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth import get_user_model
+
+
+Account = get_user_model()
 
 
 class Room(models.Model):
@@ -32,6 +36,8 @@ class Report(models.Model):
     description = models.TextField(null=False, blank=False)
     category = models.ForeignKey(
         to=Category, on_delete=models.CASCADE, related_name="report")
+    reported = models.ForeignKey(
+        to=Account, null=True, on_delete=models.SET_NULL, default=None)
     resolved = models.BooleanField(default=False, null=False, blank=False)
     snapshot = models.ImageField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)

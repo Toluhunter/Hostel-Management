@@ -10,7 +10,7 @@ class FetchReportSerialier(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        exclude = ["description"]
+        exclude = ["description", "reported"]
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -23,13 +23,18 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = '__all__'
+        exclude = ['reported']
         read_only_fields = ["id", "date_added", "resolved"]
 
     def __init__(self, instance=None, **kwargs):
         super().__init__(instance, **kwargs)
         if instance and "data" not in kwargs:
             self.fields["category"] = serializers.SerializerMethodField()
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+        attrs["reported"] = user
+        return attrs
 
 
 class DetailReportSerializer(serializers.ModelSerializer):
@@ -62,3 +67,13 @@ class CategorySerializer(serializers.ModelSerializer):
                 "Start Price Cannot be Higher than Last price")
 
         return attrs
+
+
+class FetchCompileSerilizer(serializers.ModelSerializer):
+
+    room = serializers.StringRelatedField()
+    category = CategorySerializer(read_only=True)
+
+    class Meta:
+        model = Report
+        exclude = ["description", "reported"]
