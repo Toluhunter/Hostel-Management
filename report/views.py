@@ -51,7 +51,7 @@ class ToggleReportView(generics.GenericAPIView):
 
         return report
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         report = self.get_object()
 
         report.resolved = not report.resolved
