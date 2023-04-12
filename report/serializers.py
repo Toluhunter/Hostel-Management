@@ -78,3 +78,36 @@ class FetchCompileSerilizer(serializers.ModelSerializer):
     class Meta:
         model = Report
         exclude = ["description", "reported"]
+
+
+class DeleteReportSerilizer(serializers.Serializer):
+    id = serializers.ListField()
+
+    def validate(self, attrs):
+        queryset = Report.objects.filter(id__in=[attrs["id"]])
+
+        if len(queryset) != len(attrs["id"]):
+            raise serializers.ValidationError({"id": "An Id in the list does not exist"})
+
+        queryset.delete()
+
+        return attrs
+
+
+class ToggleReportSerializer(serializers.Serializer):
+
+    id = serializers.ListField()
+
+    def validate(self, attrs):
+
+        queryset = Report.objects.filter(id__in=[attrs["id"]])
+
+        if len(queryset) != len(attrs["id"]):
+            raise serializers.ValidationError({"id": "An Id in the list does not exist"})
+
+        for report in queryset:
+            report.resolved = not report.resolved
+
+            report.save()
+
+        return attrs

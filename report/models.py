@@ -19,6 +19,7 @@ class Room(models.Model):
 class Category(models.Model):
 
     name = models.CharField(unique=True, null=False, max_length=30)
+    amount_issues = models.IntegerField(default=0, null=False, blank=False)
     start_price = models.IntegerField(validators=[MinValueValidator(
         500), MaxValueValidator(10_000)], null=False, blank=False)
     last_price = models.IntegerField(

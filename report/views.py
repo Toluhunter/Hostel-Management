@@ -40,26 +40,35 @@ class ToggleReportView(generics.GenericAPIView):
     Toggle Whethere Issue Has Been Solved or not   
     '''
 
-    serializer_class = serializers.ReportSerializer
+    serializer_class = serializers.ToggleReportSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response({"Success": True, "Message": "Toggle Successful"}, status=status.HTTP_200_OK)
+
+
+class DeleteReportView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = serializers.DeleteReportSerilizer
+
+    def post(self, request):
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response({"success": True, "message": "Deleted Successfully"})
+
+
+class DeleteCategoryView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     def get_object(self):
         id = self.kwargs["id"]
-        report = get_object_or_404(Report, id=id)
-
-        self.check_object_permissions(self.request, report)
-
-        return report
-
-    def get(self, request, *args, **kwargs):
-        report = self.get_object()
-
-        report.resolved = not report.resolved
-
-        report.save()
-        serializer = self.get_serializer(report)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        obj = get_object_or_404(Category, id=id)
+        return obj
 
 
 class FetchRoomsView(generics.ListAPIView):
