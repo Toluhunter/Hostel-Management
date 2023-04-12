@@ -96,7 +96,7 @@ class DeleteReportSerilizer(serializers.Serializer):
     def validate(self, attrs):
         queryset = Report.objects.filter(id__in=attrs["id"])
 
-        if len(queryset) != len(attrs["id"]):
+        if queryset.count() != len(attrs["id"]):
             raise serializers.ValidationError({"id": "An Id in the list does not exist"})
 
         for query in queryset:
@@ -126,7 +126,7 @@ class ToggleReportSerializer(serializers.Serializer):
 
         queryset = Report.objects.filter(id__in=attrs["id"])
 
-        if len(queryset) != len(attrs["id"]):
+        if queryset.count() != len(attrs["id"]):
             raise serializers.ValidationError({"id": "An Id in the list does not exist"})
 
         for report in queryset:

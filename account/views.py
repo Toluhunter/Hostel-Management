@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
-from .serializers import AccountSerializer, LoginSerilizer, CreateAccountSerializer, ChangePasswordSerializer
+from .serializers import AccountSerializer, LoginSerilizer, CreateAccountSerializer, ChangePasswordSerializer, DeleteSelectedUserSerilizer
+from .models import Account
 
 
 class RegisterView(generics.CreateAPIView):
@@ -75,4 +76,22 @@ class ChangePasswordView(generics.GenericAPIView):
         token, _ = Token.objects.get_or_create(user=user)
         token.delete()
 
-        return Response({"message": "Password Updated"}, status=status.HTTP_200_OK)
+        return Response({"Success": True, "Message": "Password Updated"}, status=status.HTTP_200_OK)
+
+
+class FetchAllUsersView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = AccountSerializer
+    queryset = Account.objects.all()
+
+
+class DeleteUserView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = DeleteSelectedUserSerilizer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response({"Success": True, "Message": "Deleted Successfully"}, status=status.HTTP_200_OK)

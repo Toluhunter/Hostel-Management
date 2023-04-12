@@ -51,3 +51,14 @@ class CategoryIssueView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = CategoryStatsSerializer
     queryset = Category.objects.all()
+
+
+class PriceCategoryView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request):
+        record = {}
+        for category in Category.objects.all():
+            record[category.name] = category.last_price * category.amount_issues
+
+        return Response(record)

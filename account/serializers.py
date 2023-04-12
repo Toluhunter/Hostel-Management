@@ -91,3 +91,16 @@ class ChangePasswordSerializer(serializers.Serializer):
                 "Old and New Password cannot be the same")
 
         return attrs
+
+
+class DeleteSelectedUserSerilizer(serializers.Serializer):
+    id = serializers.ListField()
+
+    def validate(self, attrs):
+        queryset = User.objects.filter(id__in=attrs["id"])
+
+        if queryset.count() != len(attrs["id"]):
+            raise serializers.ValidationError({"id": "An Id in the list does not exist"})
+
+        queryset.delete()
+        return attrs
