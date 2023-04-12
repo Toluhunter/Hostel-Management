@@ -28,6 +28,9 @@ class ReportSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         user = self.context["request"].user
         attrs["reported"] = user
+        category = attrs["category"]
+        category.amount_issues += 1
+        category.save()
         return attrs
 
 
