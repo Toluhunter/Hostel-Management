@@ -10,6 +10,6 @@ urlpatterns = [
     path("add-category/", views.CreateCategoryView.as_view(), name="add-category"),
     path("delete-category/<int:id>/", views.DeleteCategoryView.as_view(), name="del-category"),
     path("categories/", views.ListCategoryView.as_view(), name="categories"),
-    path("delete-report/", views.DeleteCategoryView.as_view(), name="delete-report"),
+    path("delete-report/", views.DeleteReportView.as_view(), name="delete-report"),
     path("", views.FetchReportView.as_view(), name="list-reports"),
 ]

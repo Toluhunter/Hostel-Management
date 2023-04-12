@@ -92,6 +92,20 @@ class DeleteReportSerilizer(serializers.Serializer):
         if len(queryset) != len(attrs["id"]):
             raise serializers.ValidationError({"id": "An Id in the list does not exist"})
 
+        for query in queryset:
+            if query.reported != self.context["request"].user:
+                raise serializers.ValidationError(
+                    {"id": "You do not own one or more of the selected reports"})
+
+            if query.resolved:
+                raise serializers.ValidationError(
+                    {"id": "You cannot delete a resolved issue"})
+
+        for query in queryset:
+            category = query.category
+            category.amount_issues -= 1
+            category.save()
+
         queryset.delete()
 
         return attrs

@@ -51,7 +51,7 @@ class ToggleReportView(generics.GenericAPIView):
 
 
 class DeleteReportView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.DeleteReportSerilizer
 
     def post(self, request):
