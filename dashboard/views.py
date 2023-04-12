@@ -3,7 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from report.models import Report
+from report.models import Report, Category
+from report.serializers import CategoryStatsSerializer
 
 
 class FetchAmountReport(generics.GenericAPIView):
@@ -43,3 +44,10 @@ class FetchIssueRatioMonth(generics.GenericAPIView):
                 date_added__month=num, date_added__year=year).count()
 
         return Response(record)
+
+
+class CategoryIssueView(generics.ListAPIView):
+
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = CategoryStatsSerializer
+    queryset = Category.objects.all()

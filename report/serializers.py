@@ -55,7 +55,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ["amount_issues"]
         read_only_fields = ['id']
 
     def validate(self, attrs):
@@ -64,6 +64,13 @@ class CategorySerializer(serializers.ModelSerializer):
                 "Start Price Cannot be Higher than Last price")
 
         return attrs
+
+
+class CategoryStatsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ["name", "amount_issues"]
 
 
 class FetchCompileCategorySerializer(serializers.ModelSerializer):

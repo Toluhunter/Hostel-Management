@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path("issues/", views.FetchAmountReport.as_view(), name="amount-issues"),
-    path("issues-per-year/", views.FetchIssueRatioMonth.as_view(), name="issues-per-year")
+    path("issues-per-year/", views.FetchIssueRatioMonth.as_view(), name="issues-per-year"),
+    path("issues-per-category/", views.CategoryIssueView.as_view(), name="issues-per-category"),
 ]
