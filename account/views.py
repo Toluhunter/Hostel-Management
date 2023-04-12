@@ -43,13 +43,19 @@ class LoginView(generics.GenericAPIView):
         return Response(response, status=status.HTTP_200_OK)
 
 
-class LogoutView(generics.DestroyAPIView):
+class LogoutView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
 
         return Token.objects.get(user=self.request.user)
+
+    def post(self, request):
+        token = self.get_object()
+        token.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ChangePasswordView(generics.GenericAPIView):
