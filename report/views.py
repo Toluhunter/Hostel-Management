@@ -23,10 +23,21 @@ class FetchReportView(generics.ListAPIView):
     queryset = Report.objects.all()
 
 
-class ManageReportView(generics.RetrieveUpdateAPIView):
+class ManageReportView(generics.UpdateAPIView):
     serializer_class = serializers.ReportSerializer
     permission_classes = [IsAuthenticated, IsReporter]
     parser_classes = [MultiPartParser]
+
+    def get_object(self):
+        id = self.kwargs["id"]
+        obj = get_object_or_404(Report, id=id)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class RetireveReportView(generics.RetrieveAPIView):
+    serializer_class = serializers.ReportSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         id = self.kwargs["id"]
